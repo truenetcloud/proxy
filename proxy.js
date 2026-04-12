@@ -35,8 +35,17 @@ app.post("/create", async (req, res) => {
       body: JSON.stringify(req.body)
     });
 
-    const text = await r.text();
-    res.send(text);
+    const contentType = r.headers.get("content-type") || "";
+
+    res.status(r.status);
+
+    if (contentType.includes("application/json")) {
+      const data = await r.json();
+      return res.json(data);
+    } else {
+      const text = await r.text();
+      return res.send(text);
+    }
 
   } catch (e) {
     console.error("CREATE ERROR", e);
@@ -54,8 +63,13 @@ app.get("/", async (req, res) => {
         "CF-Connecting-IP": req.headers["x-forwarded-for"] || req.ip
       }
     });
-    const text = await r.text();
-    res.send(text);
+    if (contentType.includes("application/json")) {
+      const data = await r.json();
+      return res.json(data);
+    } else {
+      const text = await r.text();
+      return res.send(text);
+    }
   } catch (e) {
     res.status(500).send("error");
   }
@@ -74,8 +88,13 @@ app.post("/submit", async (req, res) => {
       body: JSON.stringify(req.body)
     });
 
-    const text = await r.text();
-    res.send(text);
+    if (contentType.includes("application/json")) {
+      const data = await r.json();
+      return res.json(data);
+    } else {
+      const text = await r.text();
+      return res.send(text);
+    }
   } catch (e) {
     res.status(500).send("error");
   }
