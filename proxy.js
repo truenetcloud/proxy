@@ -56,12 +56,12 @@ app.post("/create", async (req, res) => {
 // ===== GET =====
 app.get("/", async (req, res) => {
   try {
-    //const r = await fetch(`${TARGET}/?order=${req.query.order}`);
-    const r = await fetch(`${TARGET}/?order=${req.query.order}`, {
-      headers: {
-        //"CF-Connecting-IP": req.headers["x-forwarded-for"] || req.ip
-      }
-    });
+    const r = await fetch(`${TARGET}/?order=${req.query.order}`);
+
+    const contentType = r.headers.get("content-type") || "";
+
+    res.status(r.status);
+    
     if (contentType.includes("application/json")) {
       const data = await r.json();
       return res.json(data);
@@ -79,13 +79,15 @@ app.post("/submit", async (req, res) => {
   try {
     const r = await fetch(`${TARGET}/submit`, {
       method: "POST",
-      //headers: { "Content-Type": "application/json" },
       headers: {
-        "Content-Type": "application/json",
-        //"CF-Connecting-IP": req.headers["x-forwarded-for"] || req.ip
+        "Content-Type": "application/json"
       },
       body: JSON.stringify(req.body)
     });
+
+    const contentType = r.headers.get("content-type") || "";
+
+    res.status(r.status);
 
     if (contentType.includes("application/json")) {
       const data = await r.json();
