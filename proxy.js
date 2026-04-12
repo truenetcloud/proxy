@@ -29,8 +29,7 @@ app.post("/create", async (req, res) => {
     const r = await fetch(`${TARGET}/create`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        "CF-Connecting-IP": req.headers["x-forwarded-for"] || req.ip
+        "Content-Type": "application/json"
       },
       body: JSON.stringify(req.body)
     });
@@ -60,7 +59,7 @@ app.get("/", async (req, res) => {
     //const r = await fetch(`${TARGET}/?order=${req.query.order}`);
     const r = await fetch(`${TARGET}/?order=${req.query.order}`, {
       headers: {
-        "CF-Connecting-IP": req.headers["x-forwarded-for"] || req.ip
+        //"CF-Connecting-IP": req.headers["x-forwarded-for"] || req.ip
       }
     });
     if (contentType.includes("application/json")) {
@@ -83,7 +82,7 @@ app.post("/submit", async (req, res) => {
       //headers: { "Content-Type": "application/json" },
       headers: {
         "Content-Type": "application/json",
-        "CF-Connecting-IP": req.headers["x-forwarded-for"] || req.ip
+        //"CF-Connecting-IP": req.headers["x-forwarded-for"] || req.ip
       },
       body: JSON.stringify(req.body)
     });
