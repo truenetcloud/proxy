@@ -24,7 +24,11 @@ app.use((req, res, next) => {
 app.post("/create", async (req, res) => {
   try {
 
-    console.log("CREATE", req.body);
+    //console.log("CREATE", req.body);
+    console.log("x-forwarded-for: ", req.headers["x-forwarded-for"]);
+    console.log("remoteAddress1: ", req.socket.remoteAddress);
+    console.log("x-real-ip: ", req.headers["x-real-ip"]);
+    console.log("remoteAddress2: ", req.socket.remoteAddress);
 
     const r = await fetch(`${TARGET}/create`, {
       method: "POST",
