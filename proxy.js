@@ -18,6 +18,46 @@ app.use((req, res, next) => {
   next();
 });
 
+
+// =========================
+// CHAT SEND
+// =========================
+app.post("/chat/send", async (req, res) => {
+  try {
+    const r = await fetch("https://chatbot.truenetcomp.workers.dev/send", {
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "x-forwarded-for": req.headers["x-forwarded-for"] || req.socket.remoteAddress,
+        "x-real-ip": req.headers["x-real-ip"] || req.socket.remoteAddress
+      },
+      body: JSON.stringify(req.body)
+    });
+
+    res.status(r.status);
+    res.send(await r.text());
+
+  } catch (e) {
+    res.status(500).send("error");
+  }
+});
+
+// =========================
+// CHAT GET
+// =========================
+app.get("/chat", async (req, res) => {
+  try {
+    const r = await fetch(`https://chatbot.truenetcomp.workers.dev/?client=${req.query.client}`);
+
+    res.status(r.status);
+    res.send(await r.text());
+
+  } catch (e) {
+    res.status(500).send("error");
+  }
+});
+
+
 // =========================
 // 🆕 CREATE ORDER
 // =========================
