@@ -126,7 +126,9 @@ app.post("/submit", async (req, res) => {
     const r = await fetch(`${TARGET}/submit`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "x-forwarded-for": req.headers["x-forwarded-for"] || req.socket.remoteAddress,
+        "x-real-ip": req.headers["x-real-ip"] || req.socket.remoteAddress
       },
       body: JSON.stringify(req.body)
     });
